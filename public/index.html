@@ -1,39 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>api test</title>
-</head>
-<body>
-    <h1> data-data </h1>
-
-    <script>
-        if('geolocation' in navigator){
-            console.log('geolocation is available')
-            
-            navigator.geolocation.getCurrentPosition(position => {
-                console.log(position.coords.latitude);
-                console.log(position.coords.longitude);
-
-                const lat = position.coords.latitude;
-                document.getElementById('latitude').textContent = lat; 
-                const long = position.coords.longitude;
-                document.getElementById('longitude').textContent = long;
-
-            });
-        }else{
-            console.log('geolocation is not available');
-        }
-    </script>
-
+  </head>
+  <body>
+    <h1>Data-Data</h1>
     <p>
-        latitude: <span id="latitude"></span>&deg;<br/>
-        longitude: <span id="longitude"></span>&deg;
+      latitude: <span id="latitude"></span>&deg;<br />
+      longitude: <span id="longitude"></span>&deg;
     </p>
+    <button id="submit">submit</button>
+    <script>
+      let lat, long;
+      const button = document.getElementById('submit');
+      button.addEventListener('click', async event => {
+        const data = { lat, long };
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        };
+        const response = await fetch('/api', options);
+        const json = await response.json();
+        console.log(json);
+      });
 
-
-   <p>AWOOOOOOOOOOOOOOOOOOOONGA !!</p> 
-</body>
+      if ('geolocation' in navigator) {
+        console.log('geolocation available');
+        navigator.geolocation.getCurrentPosition(async position => {
+          lat = position.coords.latitude;
+          long = position.coords.longitude;
+          document.getElementById('latitude').textContent = lat;
+          document.getElementById('longitude').textContent = long;
+        });
+      } else {
+        console.log('geolocation not available');
+      }
+    </script>
+    AWOOOOOOOOOOOOOOOOOOOOOONGA !!
+  </body>
 </html>
